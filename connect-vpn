@@ -1,0 +1,66 @@
+#!/bin/zsh
+function connect-vpn () {
+echo `pwd`
+connProfiles=`cat ./config.json`
+connXauth=`echo ${connProfiles} | /usr/local/bin/jq -r ".profiles | .\"${connName}\""`
+if [ -z "${connXauth}" ]
+then
+  echo "Profile not found!"
+  return
+else
+  echo "connecting: ${connName}"
+fi
+
+connUser=`echo ${connProfiles} | /usr/local/bin/jq -r ".username"`
+keychaniGAuthIdentifier=`echo ${connProfiles} | /usr/local/bin/jq -r ".keychainGAuthId"`
+googleTokenKey=`/usr/bin/security find-generic-password -ga $keychaniGAuthIdentifier -w`
+connOtp=`authenticator --key $googleTokenKey | grep Token: | cut -d " " -f 2 | tr -d '[:space:]'`
+
+security add-generic-password -a "${connUser}" -s "${connXauth}" -w "${connOtp}" -D "IPSec XAuth Password" -l "${connName}" -U
+
+connName=\"${connName}\"
+/usr/bin/env osascript > /dev/null <<-EOF
+tell application "System Events"
+  tell process "SystemUIServer"
+    set vpnMenu to (menu bar item 1 of menu bar 1 where description is "VPN")
+    tell vpnMenu to click
+    if ($connAction as string = "connect") then
+      try
+        click menu item ("Connect " & ${connName}) of menu 1 of vpnMenu
+      on error errMsg
+        display dialog "ERROR: Profile not found or already connected!"
+        key code 53
+        error number -128
+      end try
+      delay 2
+    else if ($connAction = "disconnect") then
+      try
+        click menu item ("Disconnect " & ${connName}) of menu 1 of vpnMenu
+      on error errMsg
+        display dialog "ERROR: Profile not found or already disconnected!"
+        key code 53
+        error number -128
+      end try
+      delay 2
+    end if
+  end tell
+end tell
+EOF
+}
+
+if [ $# -eq 2 ]
+then
+  connName=${1} || true
+  connAction=$(echo ${2} | tr '[:upper:]' '[:lower:]') || true
+  if [ "${connAction}" = 'connect' ] || [ "${connAction}" = 'disconnect' ]; then
+    connAction=\"${connAction}\"
+  else
+    echo "Put only \"VPN profile\" name and \"Action\" (connect or disconnect) as argument."
+    return
+  fi
+
+  connect-vpn $connName $connAction
+else
+  echo "Put only \"VPN profile\" name and \"Action\" (connect or disconnect) as argument."
+  return
+fi

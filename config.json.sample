@@ -1,0 +1,15 @@
+{
+	"username":"[your_gauth_username]",
+	"keychainGAuthId":"[your_keychain_token_identifier]",
+    "profiles":{
+        "Profile 1": "94C3545E-0901-4781-B0D7-288B4E29BC7B.XAUTH",
+        "Profile 2": "6CFACF7D-C93D-448A-BEE8-DC4D52EE5AC2.XAUTH",
+        "Profile 2": "14E39B2E-99AF-4251-86D7-E63DA29537A1.XAUTH",
+        "Profile r": "7CF15DDB-E41A-4A91-9CF9-CC450E04CA4F.XAUTH",
+        "Profile 5": "1CD228A6-FB40-4CE6-B2D6-BD99F4472D87.XAUTH",
+        "Profile 6": "8461DAA6-14A3-4F3A-BC3C-B46AC9904ADD.XAUTH",
+        "Profile 7": "90907802-2C15-4B41-8573-761AEE6EF0C5.XAUTH",
+        "Profile 8": "DF74E833-EFD5-476A-A361-2D6B316607ED.XAUTH",
+        "Profile 9": "2A0776D7-4241-479C-9D10-2AB26580AAA6.XAUTH"
+    }
+}
