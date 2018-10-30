@@ -1,7 +1,7 @@
 #!/bin/zsh
 function connect-vpn () {
-echo `pwd`
-connProfiles=`cat ./config.json`
+workingDir=`pwd`
+connProfiles=`cat ${workingDir}/config.json`
 connXauth=`echo ${connProfiles} | /usr/local/bin/jq -r ".profiles | .\"${connName}\""`
 if [ -z "${connXauth}" ]
 then
