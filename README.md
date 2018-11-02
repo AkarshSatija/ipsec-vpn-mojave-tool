@@ -14,6 +14,8 @@
 ```
 - replace all values in connect vpn profiles file with your personal value, without bracket
 - link `connect-vpn` file into `/usr/local/bin` or run `make link`
+- link  `config.json` to `~/vpn-ipsec-mojave-tool.json` or run `make link`
+	 `ln -s `pwd`/config.json ~/vpn-ipsec-mojave-tool.json`
 - add your gate/googleAuth token into keychain
 	- go to keychain, then File>New Password Item
 	- Use "keychain item name" and "account Name" same

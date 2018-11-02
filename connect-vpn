@@ -1,7 +1,13 @@
 #!/bin/zsh
 function connect-vpn () {
-workingDir=`pwd`
-connProfiles=`cat ${workingDir}/config.json`
+
+# Absolute path to this script. /home/user/bin/foo.sh
+# DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+# echo $(dirname "$(readlink -f "$BASH_SOURCE")")
+
+# exit
+
+connProfiles=`cat ~/vpn-ipsec-mojave-tool.json`
 connXauth=`echo ${connProfiles} | /usr/local/bin/jq -r ".profiles | .\"${connName}\""`
 if [ -z "${connXauth}" ]
 then
